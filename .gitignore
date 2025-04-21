@@ -1,0 +1,8 @@
+# ignore large files
+Fake.csv
+True.csv
+cleaned_news.csv
+
+# ignore pycache
+__pycache__/
+*.pyc
