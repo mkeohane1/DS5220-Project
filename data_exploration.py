@@ -7,12 +7,12 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-# change working directory
-os.chdir(r"C:\Users\mkeo9\OneDrive\NEU\DS 5220 Supervised Machine Learning\Project")
+# set working directory
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # load data
-fake = pd.read_csv("Fake.csv")
-real = pd.read_csv("True.csv")
+fake = pd.read_csv("data/Fake.csv")
+real = pd.read_csv("data/True.csv")
 
 # label data
 fake["label"] = 0
@@ -38,5 +38,5 @@ print(f"Fake news:", fake.head())
 print(f"Real news:", real.head())
 
 # save combined dataset to a new CSV file
-df.to_csv("cleaned_news.csv", index=False)
+df.to_csv("data/cleaned_news.csv", index=False)
 

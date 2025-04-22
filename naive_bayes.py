@@ -11,12 +11,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import classification_report, confusion_matrix
-from data_exploration import df
 
-# change working directory
-os.chdir(r"C:\Users\mkeo9\OneDrive\NEU\DS 5220 Supervised Machine Learning\Project")
+# set working directory
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-df = pd.read_csv("cleaned_news.csv")
+df = pd.read_csv("data/cleaned_news.csv")
 
 # define features and labels
 X = df["text"]
@@ -31,7 +30,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 	X_vectorized, y, test_size=0.2, random_state=42
 	)
 
-# create and train NB model
+# create and train Naive Bayes model
 model = MultinomialNB()
 model.fit(X_train, y_train)
 
