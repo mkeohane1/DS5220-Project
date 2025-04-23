@@ -11,6 +11,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import roc_curve, roc_auc_score
+from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
 
 # set working directory
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -40,4 +43,20 @@ y_pred = model.predict(X_test)
 # evaluate model
 print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
 print("Classification Report:\n", classification_report(y_test, y_pred))
+
+# generate ROC curve
+y_proba = model.predict_proba(X_test)[:, 1]
+fpr, tpr, _ = roc_curve(y_test, y_proba)
+auc_score = roc_auc_score(y_test, y_proba)
+
+plt.plot(fpr, tpr, label=f"Naive Bayes (AUC = {auc_score:.2f})")
+plt.plot([0, 1], [0, 1], linestyle="--", color="gray")
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
+plt.title("ROC Curve - Naive Bayes")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
 

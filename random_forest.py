@@ -11,6 +11,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import roc_curve, roc_auc_score
+from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
+import numpy as np
 
 # set working directory
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -37,4 +41,27 @@ y_pred = model.predict(X_test)
 # evaluate model
 print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
 print("Classification Report:\n", classification_report(y_test, y_pred))
+
+# generate ROC curve
+y_proba = model.predict_proba(X_test)[:, 1]
+fpr, tpr, _ = roc_curve(y_test, y_proba)
+auc = roc_auc_score(y_test, y_proba)
+
+plt.plot(fpr, tpr, label=f"Random Forest (AUC = {auc:.2f})")
+plt.plot([0, 1], [0, 1], linestyle="--", color="gray")
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
+plt.title("ROC Curve - Random Forest")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+
+# show which features are most important
+feature_importances = model.feature_importances_
+indices = np.argsort(feature_importances)[::-1][:10]
+print("Top 10 feature importances:")
+for i in indices:
+	print(f"{vectorizer.get_feature_names_out()[i]}: {feature_importances[i]:.4f}")
 

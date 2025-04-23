@@ -23,7 +23,10 @@ df = pd.concat([fake, real]).reset_index(drop=True)
 
 # check for duplicates
 duplicates = df.duplicated().sum()
-print(f"Number of duplicates in combined dataset: {duplicates}")
+
+# drop duplicates
+df = df.drop_duplicates().reset_index(drop=True)
+print(f"Number of duplicates removed: {duplicates}")
 
 # check shape of datasets (# of rows and columns)
 print("Fake news rows, columns:", fake.shape)
