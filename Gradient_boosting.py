@@ -4,6 +4,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.pipeline import Pipeline
 from xgboost import XGBClassifier
 from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import roc_curve, roc_auc_score
+from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
 
 # 1. Load pre‑cleaned & labeled data
 df = pd.read_csv('cleaned_news.csv')  
@@ -59,3 +62,21 @@ print("\nClassification Report:")
 print(classification_report(y_test, y_pred, target_names=['fake','real']))
 print("\nConfusion Matrix:")
 print(confusion_matrix(y_test, y_pred))
+
+# 7. Accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print(f"\nAccuracy: {accuracy:.4f}")
+
+# 8. ROC Curve & AUC
+y_prob = grid.predict_proba(X_test)[:, 1]
+auc = roc_auc_score(y_test, y_prob)
+fpr, tpr, _ = roc_curve(y_test, y_prob)
+
+plt.figure()
+plt.plot(fpr, tpr, label=f"AUC = {auc:.4f}")
+plt.plot([0, 1], [0, 1], "k--", label="Random Chance")
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
+plt.title("ROC Curve")
+plt.legend(loc="lower right")
+plt.show()
